@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  # Backend Service
+  backend:
+    build: ./backend
+    container_name: inzuhub-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://localhost:27017/inzuhub
+      - PORT=5000
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - inzuhub-network
+
+  # Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: inzuhub-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - inzuhub-network
+
+  # MongoDB Service
+  mongo:
+    image: mongo:7
+    container_name: inzuhub-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: inzuhub
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - inzuhub-network
+
+# Volumes for persistent MongoDB data
+volumes:
+  mongo-data:
+
+# Shared Network
+networks:
+  inzuhub-network:
+    driver: bridge
