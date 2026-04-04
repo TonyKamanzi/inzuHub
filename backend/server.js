@@ -6,6 +6,8 @@ import session from "express-session";
 import authRoutes from "./routes/auth.routes.js";
 import houseRoutes from "./routes/house.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import favoriteRoutes from "./routes/favorite.routes.js";
+
 dotenv.config();
 
 const app = express();
@@ -36,6 +38,7 @@ app.use(
 app.use("/auth", authRoutes);
 app.use("/house", houseRoutes);
 app.use("/admin", adminRoutes);
+app.use("/favorites", favoriteRoutes);
 
 const PORT = 5000 || process.env.PORT;
 
