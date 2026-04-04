@@ -41,7 +41,6 @@ export const signup = async (req, res) => {
   }
 };
 
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -62,7 +61,6 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-   
     req.session.user = {
       id: user._id,
       name: user.name,
@@ -87,3 +85,17 @@ export const logout = (req, res) => {
     res.json({ message: "Logout successful" });
   });
 };
+
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json({ users });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }
+};
+
+

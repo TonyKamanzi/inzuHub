@@ -4,7 +4,8 @@ import connectDB from "./config/db.js";
 import cors from "cors";
 import session from "express-session";
 import authRoutes from "./routes/auth.routes.js";
-
+import houseRoutes from "./routes/house.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 dotenv.config();
 
 const app = express();
@@ -22,14 +23,19 @@ app.use(
     secret: process.env.SESSION_SCRECT,
     resave: false,
     saveUninitialized: false,
+
     cookie: {
       maxAge: 1000 * 69 * 60 * 24,
+      httpOnly: true,
+      secure: false, // Set to true if using HTTPSS
     },
   }),
 );
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/house", houseRoutes);
+app.use("/admin", adminRoutes);
 
 const PORT = 5000 || process.env.PORT;
 

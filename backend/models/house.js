@@ -23,6 +23,17 @@ const houseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    images: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    status: {
+      type: String,
+      enum: ["available", "rented"],
+      default: "available",
+    },
   },
   { timestamps: true },
 );
