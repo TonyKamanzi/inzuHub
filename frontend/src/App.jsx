@@ -1,7 +1,22 @@
-import React from 'react'
+import React from "react";
+import Landing from "./pages/public/Landing";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Houses from "./pages/tenant/Houses";
+import BecomeLandlord from "./pages/landlord/BecomeLandlord";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 
 export default function App() {
   return (
-    <div className='bg-red-600'>App</div>
-  )
+    <>
+      <Routes>
+        // Public Routes
+        <Route path="/" element={<Landing />} />
+        <Route path="/houses" element={<Houses />} />
+        <Route path="/become-a-landlord" element={<BecomeLandlord />} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/signup" element={<Signup/>} />
+      </Routes>
+    </>
+  );
 }
