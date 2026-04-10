@@ -93,7 +93,7 @@ export default function HowItWorks() {
 /* 🔥 Reusable Card Component */
 function Card({ number, title, text }) {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+    <div className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300 hover:scale-105 hover:bg-indigo-50 hover:text-indigo-500 hover:cursor-pointer hover:shadow-indigo-300 hover:border hover:border-indigo-50">
       <div className="text-indigo-500 bg-indigo-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
         {number}
       </div>

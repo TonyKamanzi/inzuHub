@@ -15,7 +15,7 @@ export default function HouseCard({ house }) {
 
   return (
     <Link to={`/houses/${house._id}`}>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden relative cursor-pointer hover:shadow-lg transition border-stone-400">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden relative cursor-pointer hover:shadow-lg transition border-stone-400 hover:scale-105 hover:bg-indigo-50 hover:text-indigo-500  hover:border-indigo-50 hover:shadow-indigo-300 hover:border">
         {/* Image */}
         <div className="relative">
           <img

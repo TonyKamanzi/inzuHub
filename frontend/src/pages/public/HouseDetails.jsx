@@ -4,7 +4,7 @@ import { IoLocation } from "react-icons/io5";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { getHouseById } from "../../api/Houseapi";
 import { MessageCircle } from "lucide-react";
-import ChatBox from "../shared/ChatBox";
+import ChatBox from "../../components/shared/ChatBox";
 
 export default function HouseDetails() {
   const [loading, setLoading] = useState(true);

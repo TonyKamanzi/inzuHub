@@ -3,6 +3,7 @@ import Navbar from "../../components/shared/Navbar";
 import Hero from "../../components/landing/Hero";
 import Houses from "../tenant/Houses";
 import HowItWorks from "../../components/landing/HowItWorks";
+import WhyUs from "../../components/landing/WhyUs";
 
 export default function Landing() {
   return (
@@ -11,6 +12,7 @@ export default function Landing() {
       <Hero />
       <Houses />
       <HowItWorks />
+      <WhyUs/>
     </>
   );
 }
