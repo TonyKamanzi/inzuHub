@@ -22,9 +22,9 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <Link to="/houses" className="hover:text-blue-500 text-gray-700 font-light">
+              <a href="#houses" className="hover:text-blue-500 text-gray-700 font-light">
                 Browse Houses
-              </Link>
+              </a>
             </li>
             <li>
               <Link to="/become-a-landlord" className="hover:text-blue-500 text-gray-700 font-light">

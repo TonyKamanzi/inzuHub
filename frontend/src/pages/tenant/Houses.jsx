@@ -32,14 +32,14 @@ export default function Houses() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto my-16">
+    <div className="max-w-7xl mx-auto my-16" id="houses">
       <div
-        className="px-4 py-1 md:px-6 md:py-2 md:ml-140 ml-30 rounded-full mb-5
-  bg-neutral-50 text-indigo-700 p-3 shadow-md  items-center gap-2 w-max flex justify-center text-xl"
+        className="px-4 py-1 md:px-6 md:py-2 md:ml-140 ml-22 rounded-full mb-5
+  bg-indigo-50 text-indigo-500 border  p-3 shadow-md  items-center gap-2 w-max flex justify-center text-xl"
       >
         Featured Houses
       </div>
-      <h1 className="text-4xl text-center font-bold mb-10 tracking-wide text-gray-800">
+      <h1 className="md:text-4xl text-center font-bold mb-10 tracking-wide text-gray-800">
         Explore Avaiable Houses
       </h1>
       <p className="text-lg text-gray-600 text-center">
