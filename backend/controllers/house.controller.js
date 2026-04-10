@@ -7,7 +7,7 @@ export const createHouse = async (req, res) => {
     if (!req.session.user) {
       return res.status(401).json({ message: "Please login first" });
     }
-    const { title, description, location, price, images, status } = req.body;
+    const { title, description, location, price, images, status, rooms, bathrooms, area } = req.body;
     const newHouse = new House({
       title,
       description,
@@ -16,6 +16,9 @@ export const createHouse = async (req, res) => {
       landlord: req.session.user.id,
       images,
       status,
+      rooms,
+      bathrooms,
+      area,
     });
     await newHouse.save();
     res

@@ -34,6 +34,22 @@ const houseSchema = new mongoose.Schema(
       enum: ["available", "rented"],
       default: "available",
     },
+    rooms: {
+      type: Number,
+      required: true,
+    },
+    bathrooms: {
+      type: Number,
+      required: true,
+    },
+    area: {
+      type: Number,
+      required: true,
+    },
+    contactaddress: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
