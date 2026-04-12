@@ -21,6 +21,8 @@ export default function HouseCard({ house }) {
           <img
             src={house.images[0] || "/placeholder-house.jpg"}
             alt={house.title}
+            to="/signup"
+            loading="lazy"
             className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
           />
 
@@ -69,8 +71,11 @@ export default function HouseCard({ house }) {
           </div>
         </div>
         <div>
-          <Link to={`/houses/${house._id}`} className="bg-indigo-50 text-indigo-700 p-2 rounded-b-lg block text-center font-medium hover:bg-indigo-500 hover:text-white transition">
-          View details
+          <Link
+            to={`/houses/${house._id}`}
+            className="bg-indigo-50 text-indigo-700 p-2 rounded-b-lg block text-center font-medium hover:bg-indigo-500 hover:text-white transition"
+          >
+            View details
           </Link>
         </div>
       </div>

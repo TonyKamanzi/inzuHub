@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { getHouseById } from "../../api/Houseapi";
-import { MessageCircle } from "lucide-react";
+import { ArrowBigLeft, MessageCircle } from "lucide-react";
 import ChatBox from "../../components/shared/ChatBox";
 
 export default function HouseDetails() {
@@ -25,17 +25,14 @@ export default function HouseDetails() {
   }, [id]);
 
   // ✅ Loading state
-  if (loading) {
-    return (
-      <div className="flex gap-4 items-center justify-center h-64">
-        <div className="bg-indigo-500 text-indigo-500 rounded-full h-4 w-4 animate-bounce transition-all " />
-        <div className="bg-indigo-500 text-indigo-500 rounded-full h-4 w-4 animate-bounce transition-all " />
-        <div className="bg-indigo-500 text-indigo-500 rounded-full h-4 w-4 animate-bounce  transition-all" />
-        <div className="text-center  text-indigo-500 ">Loading house details...</div>
-      </div>
-    );
-  }
-
+ if (loading) {
+   return (
+     <div className="flex flex-col justify-center items-center h-64 gap-4">
+       <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+       <p className="text-indigo-500 text-lg font-medium">Loading houses...</p>
+     </div>
+   );
+ }
   // ✅ Safety check
   if (!house) {
     return <p className="text-center mt-10 text-red-500">House not found</p>;
@@ -43,6 +40,13 @@ export default function HouseDetails() {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
+      <button
+        onClick={() => window.history.back()}
+        className="my-8 text-indigo-500 bg-indigo-500/20 hover:bg-indigo-500/30 transition px-4 py-2 rounded-md"
+      >
+        <ArrowBigLeft className="w-6 h-6 inline-block mr-1" />
+        Go Back
+      </button>
       {/* 🖼️ Image Gallery */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         {/* Main Image */}

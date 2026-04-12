@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getHouses } from "../../api/Houseapi";
 import HouseCard from "../../components/houses/HouseCard";
+import { Link } from "react-router-dom";
 
 export default function Houses() {
   const [houses, setHouses] = useState([]);
@@ -20,17 +21,16 @@ export default function Houses() {
     fetchHouses();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64 gap-4">
-        <div className="text-indigo-500 bg-indigo-500 rounded-full w-5 h-5 animate-spin  " />
-        <div className="text-indigo-500 bg-indigo-500 rounded-full w-5 h-5 animate-spin  " />
-        <div className="text-indigo-500 bg-indigo-500 rounded-full w-5 h-5 animate-spin  " />
-        <div className="text-indigo-500 text-xl">Loading houses...</div>
-      </div>
-    );
-  }
-
+ if (loading) {
+  return (
+    <div className="flex flex-col justify-center items-center h-64 gap-4">
+      <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-indigo-500 text-lg font-medium">
+        Loading houses...
+      </p>
+    </div>
+  );
+}
   return (
     <div className="max-w-7xl mx-auto my-16" id="houses">
       <div
@@ -53,7 +53,7 @@ export default function Houses() {
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
-            {houses.map((house) => (
+            {houses.slice(0, 12).map((house) => (
               <HouseCard
                 house={house}
                 key={house._id}
@@ -62,6 +62,14 @@ export default function Houses() {
             ))}
           </div>
         )}
+        <div>
+          <Link
+            to="/all-houses"
+            className="bg-indigo-500 text-white px-6 py-3 rounded-full shadow-lg hover:bg-indigo-600 transition duration-300 mt-10 block w-max mx-auto"
+          >
+            View All Houses
+          </Link>
+        </div>
       </div>
     </div>
   );
