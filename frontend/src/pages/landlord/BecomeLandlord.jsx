@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function BecomeLandlord() {
   return (
-    <div>
+    <div id="becomelandlord">
       <div className="max-w-7xl mx-auto md:my-40 bg-indigo-900 relative md:rounded-2xl p-10">
         <div className="absolute bottom-0 left-0 w-64 h-64  bg-orange-200 rounded-full translate-y-32 -translate-x-16 opacity-40" />
         <div className="absolute -top-15 -right-25 w-64 h-64  bg-gray-100 rounded-full translate-y-0 translate-x-0 opacity-40" />
