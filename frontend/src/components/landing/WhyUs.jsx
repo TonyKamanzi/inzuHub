@@ -58,7 +58,7 @@ export default function WhyUs() {
   ];
   return (
     <div className="bg-indigo-100">
-      <div className="max-w-6xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto p-4">
         <h1 className="text-lg text-indigo-500 border font-bold shadow-md bg-indigo-50 w-max px-2 mx-auto py-1 rounded-full mb-4">
           Why Us?
         </h1>

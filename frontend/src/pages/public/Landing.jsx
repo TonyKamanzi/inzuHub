@@ -4,6 +4,7 @@ import Hero from "../../components/landing/Hero";
 import Houses from "../tenant/Houses";
 import HowItWorks from "../../components/landing/HowItWorks";
 import WhyUs from "../../components/landing/WhyUs";
+import BecomeLandlord from "../landlord/BecomeLandlord";
 
 export default function Landing() {
   return (
@@ -12,7 +13,8 @@ export default function Landing() {
       <Hero />
       <Houses />
       <HowItWorks />
-      <WhyUs/>
+      <WhyUs />
+      <BecomeLandlord/>
     </>
   );
 }
