@@ -5,6 +5,7 @@ import Houses from "../tenant/Houses";
 import HowItWorks from "../../components/landing/HowItWorks";
 import WhyUs from "../../components/landing/WhyUs";
 import BecomeLandlord from "../landlord/BecomeLandlord";
+import Testmonials from "../../components/landing/Testmonials";
 
 export default function Landing() {
   return (
@@ -14,7 +15,8 @@ export default function Landing() {
       <Houses />
       <HowItWorks />
       <WhyUs />
-      <BecomeLandlord/>
+      <BecomeLandlord />
+      <Testmonials/>
     </>
   );
 }
