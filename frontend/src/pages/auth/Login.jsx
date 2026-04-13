@@ -61,8 +61,16 @@ export default function Login() {
     if (!valid) return;
 
     try {
-      await login(email, password);
-      navigate("/");
+      const response = await login(email, password);
+
+      // Redirect based on role
+      if (response.user.role === "admin") {
+        navigate("/admin");
+      } else if (response.user.role === "landlord") {
+        navigate("/landlord/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setLocalError(err.response?.data?.message || "Invalid email or password");
     }

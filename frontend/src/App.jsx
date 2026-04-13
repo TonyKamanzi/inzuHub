@@ -10,11 +10,27 @@ import AllHouses from "./pages/tenant/AllHouses";
 import NotFound from "./pages/public/NotFound";
 import Navbar from "./components/shared/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLayout from "./components/admin/AdminLayout";
+
+// Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminUsers from "./pages/admin/Users";
+import AdminLandlords from "./pages/admin/Landlords";
+import AdminHouses from "./pages/admin/Houses";
 
 export default function App() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signup"];
-  const showNavbar = !hideNavbarRoutes.includes(location.pathname);
+  const hideNavbarRoutes = [
+    "/login",
+    "/signup",
+    "/admin",
+    "/admin/users",
+    "/admin/landlords",
+    "/admin/houses",
+  ];
+  const showNavbar = !hideNavbarRoutes.some((route) =>
+    location.pathname.startsWith(route),
+  );
 
   return (
     <>
@@ -45,6 +61,48 @@ export default function App() {
           element={
             <ProtectedRoute requiredRole="landlord">
               <BecomeLandlord />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <AdminDashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <AdminUsers />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/landlords"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <AdminLandlords />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/houses"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminLayout>
+                <AdminHouses />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
