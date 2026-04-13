@@ -1,5 +1,19 @@
 import { Verified, Search } from "lucide-react";
-export default function Hero() {
+import { useState } from "react";
+
+export default function Hero({ onSearch }) {
+  const [location, setLocation] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  const handleSearch = () => {
+    if (location || maxPrice) {
+      onSearch({
+        location,
+        maxPrice: maxPrice ? parseInt(maxPrice.replace(/,/g, "")) : null,
+      });
+    }
+  };
+
   return (
     <section className="relative overflow-hidden bg-linear-to-br from-indigo-900 via-indigo-700 to-purple-800 px-6 py-20">
       <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
@@ -41,23 +55,41 @@ export default function Hero() {
             <input
               type="text"
               placeholder="Location(e.g., Kigali, Butare, Rubavu)"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="flex-1 min-w-30 px-4 py-2 rounded-lg bg-white/10 text-white placeholder:text-white/60 outline-none"
             />
 
-            <select className="px-4 py-2 rounded-lg  bg-white/70 backdrop:blur-md  text-gray-800">
+            <select
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+              className="px-4 py-2 rounded-lg  bg-white/70 backdrop:blur-md  text-gray-800"
+            >
               <option value="">Max Price(RWF)</option>
-              <option value="">150,000 RWF</option>
-              <option value="">200,000 RWF</option>
-              <option value="">250,000 RWF</option>
-              <option value="">300,000 RWF</option>
-              <option value="">350,000 RWF</option>
-              <option value="">400,000 RWF</option>
-              <option value="">450,000 RWF</option>
-              <option value="">500,000 RWF</option>
-              <option value="">Above</option>
+              <option value="150000">150,000 RWF</option>
+              <option value="200000">200,000 RWF</option>
+              <option value="250000">250,000 RWF</option>
+              <option value="300000">300,000 RWF</option>
+              <option value="350000">350,000 RWF</option>
+              <option value="400000">400,000 RWF</option>
+              <option value="450000">450,000 RWF</option>
+              <option value="500000">500,000 RWF</option>
+              <option value="550000">550,000 RWF</option>
+              <option value="600000">600,000 RWF</option>
+              <option value="650000">650,000 RWF</option>
+              <option value="700000">700,000 RWF</option>
+              <option value="750000">750,000 RWF</option>
+              <option value="800000">800,000 RWF</option>
+              <option value="850000">850,000 RWF</option>
+              <option value="900000">900,000 RWF</option>
+              <option value="950000">950,000 RWF</option>
+              <option value="1000000">1,000,000 RWF</option>
             </select>
 
-            <button className="bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-gray-900 cursor-pointer">
+            <button
+              onClick={handleSearch}
+              className="bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 text-gray-900 cursor-pointer"
+            >
               <Search /> Search
             </button>
           </div>
