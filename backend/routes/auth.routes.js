@@ -1,5 +1,11 @@
 import express from "express";
-import { signup, login, logout, getUsers, getCurrentUser } from "../controllers/auth.controller.js";
+import {
+  signup,
+  login,
+  logout,
+  getUsers,
+  getCurrentUser,
+} from "../controllers/auth.controller.js";
 import { isLoggedIn } from "../middleware/sessionMiddleware.js";
 
 const router = express.Router();

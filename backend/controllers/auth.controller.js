@@ -86,7 +86,6 @@ export const logout = (req, res) => {
   });
 };
 
-
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -104,5 +103,3 @@ export const getCurrentUser = (req, res) => {
   }
   res.json({ user: req.session.user });
 };
-
-
