@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const API_URL = "http://localhost:5000";
@@ -14,17 +14,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await axios.get(`${API_URL}/auth`, {
+        setLoading(true);
+        const response = await axios.get(`${API_URL}/auth/current`, {
           withCredentials: true,
         });
-        if (response.data.users && response.data.users.length > 0) {
-          // This endpoint returns all users, we need to get current user
-          // We'll implement a better endpoint in backend
-          setUser(null);
+        if (response.data && response.data.user) {
+          setUser(response.data.user);
         }
       } catch (err) {
-        // User is not logged in
+        // User is not logged in or session expired - this is expected
+        // Silently fail and set user to null
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
 

@@ -98,4 +98,11 @@ export const getUsers = async (req, res) => {
   }
 };
 
+export const getCurrentUser = (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+  res.json({ user: req.session.user });
+};
+
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Users, Zap, Clock, TrendingUp, Home } from "lucide-react";
+import { toast } from "react-toastify";
 import Topbar from "../../components/admin/Topbar";
 import StatCard from "../../components/admin/StatCard";
 import adminService from "../../api/adminService";
@@ -24,6 +25,7 @@ export default function AdminDashboard() {
       setStats(data);
     } catch (err) {
       console.error("Failed to fetch stats:", err);
+      toast.error("Failed to load dashboard stats");
     } finally {
       setLoading(false);
     }

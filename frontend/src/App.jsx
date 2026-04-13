@@ -11,12 +11,19 @@ import NotFound from "./pages/public/NotFound";
 import Navbar from "./components/shared/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./components/admin/AdminLayout";
+import LandlordLayout from "./components/landlord/LandlordLayout";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminUsers from "./pages/admin/Users";
 import AdminLandlords from "./pages/admin/Landlords";
 import AdminHouses from "./pages/admin/Houses";
+
+// Landlord Pages
+import LandlordDashboard from "./pages/landlord/Dashboard";
+import LandlordHouses from "./pages/landlord/Houses";
+import AddHouse from "./pages/landlord/AddHouse";
+import EditHouse from "./pages/landlord/EditHouse";
 
 export default function App() {
   const location = useLocation();
@@ -27,6 +34,11 @@ export default function App() {
     "/admin/users",
     "/admin/landlords",
     "/admin/houses",
+    "/landlord",
+    "/landlord/dashboard",
+    "/landlord/houses",
+    "/landlord/add-house",
+    "/landlord/edit-house",
   ];
   const showNavbar = !hideNavbarRoutes.some((route) =>
     location.pathname.startsWith(route),
@@ -60,7 +72,39 @@ export default function App() {
           path="/landlord/dashboard"
           element={
             <ProtectedRoute requiredRole="landlord">
-              <BecomeLandlord />
+              <LandlordLayout>
+                <LandlordDashboard />
+              </LandlordLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/landlord/houses"
+          element={
+            <ProtectedRoute requiredRole="landlord">
+              <LandlordLayout>
+                <LandlordHouses />
+              </LandlordLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/landlord/add-house"
+          element={
+            <ProtectedRoute requiredRole="landlord">
+              <LandlordLayout>
+                <AddHouse />
+              </LandlordLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/landlord/edit-house/:id"
+          element={
+            <ProtectedRoute requiredRole="landlord">
+              <LandlordLayout>
+                <EditHouse />
+              </LandlordLayout>
             </ProtectedRoute>
           }
         />

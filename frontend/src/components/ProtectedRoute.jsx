@@ -21,6 +21,30 @@ export const ProtectedRoute = ({ children, requiredRole = null }) => {
     return <Navigate to="/" replace />;
   }
 
+  // Check if landlord is approved
+  if (requiredRole === "landlord" && user?.status !== "approved") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="text-5xl mb-4">⏳</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Pending Approval
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Your landlord account is awaiting admin approval. You'll be able to
+            access your dashboard once approved.
+          </p>
+          <a
+            href="/"
+            className="text-indigo-600 hover:text-indigo-700 font-medium"
+          >
+            Return to Home
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return children;
 };
 
