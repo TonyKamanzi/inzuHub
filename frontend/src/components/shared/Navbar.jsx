@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, LogOut, User, Settings } from "lucide-react";
+import { Menu, LogOut, User, Settings, Heart, Home } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
 
@@ -59,6 +59,36 @@ export default function Navbar() {
                 Browse Houses
               </a>
             </li>
+            {isAuthenticated && user?.role === "tenant" && (
+              <>
+                <li>
+                  <Link
+                    to="/favorites"
+                    className="hover:text-red-500 text-gray-700 font-light"
+                  >
+                    Favorites
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="hover:text-blue-500 text-gray-700 font-light"
+                  >
+                    Profile
+                  </Link>
+                </li>
+              </>
+            )}
+            {isAuthenticated && user?.role === "landlord" && (
+              <li>
+                <Link
+                  to="/landlord/dashboard"
+                  className="hover:text-purple-500 text-gray-700 font-light"
+                >
+                  My Properties
+                </Link>
+              </li>
+            )}
             {isAuthenticated &&
               (user?.role === "landlord" || user?.role === "admin") && (
                 <li>
@@ -105,13 +135,45 @@ export default function Navbar() {
                       <p className="text-xs text-gray-500">{user?.role}</p>
                     </div>
 
-                    <a
-                      href="#profile"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
-                    >
-                      <User className="w-4 h-4" />
-                      Profile
-                    </a>
+                    {user?.role === "tenant" && (
+                      <>
+                        <Link
+                          to="/profile"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                        >
+                          <User className="w-4 h-4" />
+                          My Profile
+                        </Link>
+
+                        <Link
+                          to="/favorites"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                        >
+                          <Heart className="w-4 h-4" />
+                          My Favorites
+                        </Link>
+                      </>
+                    )}
+
+                    {user?.role === "landlord" && (
+                      <Link
+                        to="/landlord/dashboard"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                      >
+                        <Home className="w-4 h-4" />
+                        My Properties
+                      </Link>
+                    )}
+
+                    {!["tenant", "landlord"].includes(user?.role) && (
+                      <a
+                        href="#profile"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                      >
+                        <User className="w-4 h-4" />
+                        Profile
+                      </a>
+                    )}
 
                     {user?.role === "admin" && (
                       <Link
@@ -183,6 +245,30 @@ export default function Navbar() {
             >
               Browse Houses
             </Link>
+            {isAuthenticated && user?.role === "tenant" && (
+              <>
+                <Link
+                  to="/favorites"
+                  className="block px-4 font-sans text-gray-800 hover:text-red-600 transition"
+                >
+                  My Favorites
+                </Link>
+                <Link
+                  to="/profile"
+                  className="block px-4 font-sans text-gray-800 hover:text-blue-600 transition"
+                >
+                  My Profile
+                </Link>
+              </>
+            )}
+            {isAuthenticated && user?.role === "landlord" && (
+              <Link
+                to="/landlord/dashboard"
+                className="block px-4 font-sans text-gray-800 hover:text-purple-600 transition"
+              >
+                My Properties
+              </Link>
+            )}
             {isAuthenticated &&
               (user?.role === "landlord" || user?.role === "admin") && (
                 <Link

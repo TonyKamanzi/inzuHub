@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { getHouses } from "../../api/Houseapi";
 import HouseCard from "../../components/houses/HouseCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import favoriteService from "../../services/favoriteService";
+import { toast } from "react-toastify";
 
 export default function Houses() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [houses, setHouses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [favoriteIds, setFavoriteIds] = useState(new Set());
 
   useEffect(() => {
     const fetchHouses = async () => {
@@ -19,18 +25,61 @@ export default function Houses() {
     };
 
     fetchHouses();
-  }, []);
 
- if (loading) {
-  return (
-    <div className="flex flex-col justify-center items-center h-64 gap-4">
-      <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className="text-indigo-500 text-lg font-medium">
-        Loading houses...
-      </p>
-    </div>
-  );
-}
+    // Fetch favorites if user is logged in
+    if (user) {
+      fetchFavorites();
+    }
+  }, [user]);
+
+  const fetchFavorites = async () => {
+    try {
+      console.log("[Houses] Fetching favorites for user:", user?.id);
+      const data = await favoriteService.getFavorites();
+      console.log("[Houses] Got favorites:", data);
+      const ids = new Set(data.map((house) => house._id));
+      setFavoriteIds(ids);
+    } catch (error) {
+      console.error("[Houses] Error fetching favorites:", error);
+    }
+  };
+
+  const handleToggleFavorite = async (houseId) => {
+    if (!user) {
+      toast.info("Please login to save favorites");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      console.log("[Houses] Toggling favorite:", houseId);
+      if (favoriteIds.has(houseId)) {
+        await favoriteService.removeFavorite(houseId);
+        setFavoriteIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(houseId);
+          return newSet;
+        });
+        toast.success("Removed from favorites");
+      } else {
+        await favoriteService.addFavorite(houseId);
+        setFavoriteIds((prev) => new Set([...prev, houseId]));
+        toast.success("Added to favorites");
+      }
+    } catch (error) {
+      console.error("[Houses] Error toggling favorite:", error);
+      toast.error(error.message || "Failed to update favorite");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-64 gap-4">
+        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-indigo-500 text-lg font-medium">Loading houses...</p>
+      </div>
+    );
+  }
   return (
     <div className="max-w-7xl mx-auto my-16" id="houses">
       <div
@@ -57,6 +106,8 @@ export default function Houses() {
               <HouseCard
                 house={house}
                 key={house._id}
+                isFavorite={favoriteIds.has(house._id)}
+                onToggleFavorite={handleToggleFavorite}
                 className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
               />
             ))}

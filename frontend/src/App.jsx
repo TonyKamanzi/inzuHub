@@ -25,6 +25,11 @@ import LandlordHouses from "./pages/landlord/Houses";
 import AddHouse from "./pages/landlord/AddHouse";
 import EditHouse from "./pages/landlord/EditHouse";
 
+// Tenant Pages
+import Home from "./pages/tenant/Home";
+import Favorites from "./pages/tenant/Favorites";
+import Profile from "./pages/tenant/Profile";
+
 export default function App() {
   const location = useLocation();
   const hideNavbarRoutes = [
@@ -58,6 +63,30 @@ export default function App() {
         <Route path="/all-houses" element={<AllHouses />} />
 
         {/* Tenant Routes */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute requiredRole="tenant">
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute requiredRole="tenant">
+              <Favorites />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute requiredRole="tenant">
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/tenant/houses"
           element={
