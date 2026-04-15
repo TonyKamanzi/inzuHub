@@ -8,8 +8,10 @@ import WhyUs from "../../components/landing/WhyUs";
 import BecomeLandlord from "../landlord/BecomeLandlord";
 import Testmonials from "../../components/landing/Testmonials";
 import Footer from "../../components/shared/Footer";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Landing() {
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useState(null);
 
   const handleSearch = (params) => {
@@ -33,7 +35,7 @@ export default function Landing() {
       {!searchParams && <Houses />}
       <HowItWorks />
       <WhyUs />
-      <BecomeLandlord />
+      {!user && <BecomeLandlord />}
       <Testmonials />
       <Footer />
     </>
