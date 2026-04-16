@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import favoriteService from "../../services/favoriteService";
 import { toast } from "react-toastify";
+import { HouseCardGridSkeleton } from "../../components/tenant/Loader";
 
 export default function Houses() {
   const navigate = useNavigate();
@@ -72,14 +73,9 @@ export default function Houses() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-64 gap-4">
-        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-indigo-500 text-lg font-medium">Loading houses...</p>
-      </div>
-    );
-  }
+   if (loading) {
+      return <HouseCardGridSkeleton count={6} />;
+    }
   return (
     <div className="max-w-7xl mx-auto my-16" id="houses">
       <div

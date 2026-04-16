@@ -34,7 +34,7 @@ app.use(
 );
 app.use(
   session({
-    secret: process.env.SESSION_SCRECT,
+    secret: "jkhiuilil",
     resave: false,
     saveUninitialized: false,
 

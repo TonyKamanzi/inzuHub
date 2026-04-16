@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Topbar from "../../components/admin/Topbar";
 import adminService from "../../api/adminService";
+import { HouseCardGridSkeleton } from "../../components/tenant/Loader";
 
 export default function AdminHouses() {
   const [houses, setHouses] = useState([]);
@@ -61,9 +62,7 @@ export default function AdminHouses() {
 
       <div className="p-6 max-w-7xl mx-auto">
         {loading ? (
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-          </div>
+          <HouseCardGridSkeleton count={6} />
         ) : houses.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-200">
             <p className="text-gray-500 text-lg">No houses found</p>

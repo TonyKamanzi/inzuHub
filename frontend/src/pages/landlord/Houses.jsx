@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import landlordService from "../../api/landlordService";
 import LandlordTopbar from "../../components/landlord/Topbar";
+import { HouseCardGridSkeleton } from "../../components/tenant/Loader";
 
 export default function Houses() {
   const navigate = useNavigate();
@@ -72,14 +73,7 @@ export default function Houses() {
 
         {/* Houses Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-80 bg-gray-200 rounded-lg animate-pulse"
-              ></div>
-            ))}
-          </div>
+         <HouseCardGridSkeleton/>
         ) : houses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {houses.map((house) => (

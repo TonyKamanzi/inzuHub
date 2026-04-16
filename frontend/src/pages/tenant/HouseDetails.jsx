@@ -49,11 +49,12 @@ export default function HouseDetails() {
           const isFav = favorites.some((house) => house._id === id);
           setIsFavorite(isFav);
         } catch (err) {
-          console.log("Could not fetch favorites");
+          console.error("Could not fetch favorites", err);
         }
       }
     } catch (error) {
       toast.error("Failed to load property details");
+      console.error("House details error:", error);
       setTimeout(() => navigate("/"), 2000);
     } finally {
       setLoading(false);
@@ -100,6 +101,7 @@ export default function HouseDetails() {
       setContactMessage("");
     } catch (error) {
       toast.error("Failed to send message");
+      console.error("Contact error:", error);
     } finally {
       setContactLoading(false);
     }

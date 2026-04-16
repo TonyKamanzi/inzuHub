@@ -81,9 +81,9 @@ export default function Favorites() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-12 px-4">
+      <div className="bg-linear-to-r from-indigo-600 to-indigo-800 text-white py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <Heart size={32} className="fill-current" />
