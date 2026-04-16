@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard, UserRoundIcon, HousePlus, Users } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Sidebar() {
@@ -9,10 +9,10 @@ export default function Sidebar() {
   const { logout } = useAuth();
 
   const navItems = [
-    { name: "Dashboard", path: "/admin", icon: "📊" },
-    { name: "Users", path: "/admin/users", icon: "👥" },
+    { name: "Dashboard", path: "/admin", icon: <LayoutDashboard/> },
+    { name: "Users", path: "/admin/users", icon: <Users/> },
     { name: "Landlords", path: "/admin/landlords", icon: "🏢" },
-    { name: "Houses", path: "/admin/houses", icon: "🏘️" },
+    { name: "Houses", path: "/admin/houses", icon: <HousePlus/> },
   ];
 
   const isActive = (path) => location.pathname === path;

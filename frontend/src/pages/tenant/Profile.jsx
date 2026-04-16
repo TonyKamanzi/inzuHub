@@ -36,6 +36,7 @@ export default function Profile() {
       navigate("/login");
     } catch (error) {
       toast.error("Failed to logout");
+      console.error("Logout error:", error);
       setLoading(false);
     }
   };
@@ -53,9 +54,9 @@ export default function Profile() {
   const userInitial = user.name ? user.name.charAt(0).toUpperCase() : "U";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-12 px-4">
+      <div className="bg-linear -to-r from-indigo-600 to-indigo-800 text-white py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <User size={32} />
@@ -75,7 +76,7 @@ export default function Profile() {
             <div className="bg-white rounded-lg shadow-lg p-8">
               {/* Avatar Section */}
               <div className="flex items-center gap-6 mb-8 pb-8 border-b border-gray-200">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+                <div className="w-24 h-24 rounded-full bg-linear-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
                   {userInitial}
                 </div>
                 <div>
