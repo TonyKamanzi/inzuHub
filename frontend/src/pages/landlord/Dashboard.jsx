@@ -50,7 +50,7 @@ export default function Dashboard() {
         ) : stats ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {/* Total Houses Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+            <div className="bg-white rounded-lg shadow p-6 bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">
@@ -65,13 +65,13 @@ export default function Dashboard() {
             </div>
 
             {/* Available Houses Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+            <div className=" rounded-lg shadow p-6 bg-green-50">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">
                     Available Houses
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-3xl font-bold text-green-400 mt-2">
                     {stats.availableHouses}
                   </p>
                 </div>
@@ -80,13 +80,13 @@ export default function Dashboard() {
             </div>
 
             {/* Rented Houses Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-amber-500">
+            <div className=" rounded-lg shadow p-6 bg-yellow-50">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-600 text-sm font-medium">
                     Rented Houses
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-3xl font-bold text-yellow-300 mt-2">
                     {stats.rentedHouses}
                   </p>
                 </div>
