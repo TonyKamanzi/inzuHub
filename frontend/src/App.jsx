@@ -22,6 +22,7 @@ import AdminHouses from "./pages/admin/Houses";
 // Landlord Pages
 import LandlordDashboard from "./pages/landlord/Dashboard";
 import LandlordHouses from "./pages/landlord/Houses";
+import LandlordBookings from "./pages/landlord/Bookings";
 import AddHouse from "./pages/landlord/AddHouse";
 import EditHouse from "./pages/landlord/EditHouse";
 
@@ -29,6 +30,7 @@ import EditHouse from "./pages/landlord/EditHouse";
 import Home from "./pages/tenant/Home";
 import Favorites from "./pages/tenant/Favorites";
 import Profile from "./pages/tenant/Profile";
+import TenantBookings from "./pages/tenant/Bookings";
 
 export default function App() {
   const location = useLocation();
@@ -42,6 +44,7 @@ export default function App() {
     "/landlord",
     "/landlord/dashboard",
     "/landlord/houses",
+    "/landlord/bookings",
     "/landlord/add-house",
     "/landlord/edit-house",
   ];
@@ -88,6 +91,14 @@ export default function App() {
           }
         />
         <Route
+          path="/tenant/bookings"
+          element={
+            <ProtectedRoute requiredRole="tenant">
+              <TenantBookings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/tenant/houses"
           element={
             <ProtectedRoute requiredRole="tenant">
@@ -113,6 +124,16 @@ export default function App() {
             <ProtectedRoute requiredRole="landlord">
               <LandlordLayout>
                 <LandlordHouses />
+              </LandlordLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/landlord/bookings"
+          element={
+            <ProtectedRoute requiredRole="landlord">
+              <LandlordLayout>
+                <LandlordBookings />
               </LandlordLayout>
             </ProtectedRoute>
           }

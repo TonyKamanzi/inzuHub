@@ -1,17 +1,23 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { getHouseById } from "../../api/Houseapi";
 import { ArrowBigLeft, MessageCircle } from "lucide-react";
 import ChatBox from "../../components/shared/ChatBox";
+import BookingModal from "../../components/shared/BookingModal";
+import { useAuth } from "../../context/AuthContext";
 
 export default function HouseDetails() {
   const [loading, setLoading] = useState(true);
   const [house, setHouse] = useState([]);
   const [openChat, setOpenChat] = useState(false);
+  const [openBookingModal, setOpenBookingModal] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const { id } = useParams();
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHouse = async () => {
@@ -24,15 +30,30 @@ export default function HouseDetails() {
     fetchHouse();
   }, [id]);
 
+  const handleBookingClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+    setOpenBookingModal(true);
+  };
+
+  const handleBookingSuccess = (bookingData) => {
+    setBookingSuccess(true);
+    setTimeout(() => {
+      setBookingSuccess(false);
+    }, 5000);
+  };
+
   // ✅ Loading state
- if (loading) {
-   return (
-     <div className="flex flex-col justify-center items-center h-64 gap-4">
-       <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-       <p className="text-indigo-500 text-lg font-medium">Loading houses...</p>
-     </div>
-   );
- }
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-64 gap-4">
+        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-indigo-500 text-lg font-medium">Loading houses...</p>
+      </div>
+    );
+  }
   // ✅ Safety check
   if (!house) {
     return <p className="text-center mt-10 text-red-500">House not found</p>;
@@ -40,6 +61,28 @@ export default function HouseDetails() {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
+      {/* Booking Success Message */}
+      {bookingSuccess && (
+        <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6 flex items-center">
+          <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-3">
+            <svg
+              className="w-3 h-3 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <span className="font-medium">Booking submitted successfully!</span>
+          <span className="ml-2 text-green-600">
+            The landlord will review your request.
+          </span>
+        </div>
+      )}
       <button
         onClick={() => window.history.back()}
         className="my-8 text-indigo-500 bg-indigo-500/20 hover:bg-indigo-500/30 transition px-4 py-2 rounded-md"
@@ -146,11 +189,23 @@ export default function HouseDetails() {
           Chat with Owner
         </button>
 
-        <button className="border border-indigo-500 text-indigo-500 px-6 py-2 rounded-lg hover:bg-indigo-50 transition">
-          Book Now
+        <button
+          onClick={handleBookingClick}
+          className="border border-indigo-500 text-indigo-500 px-6 py-2 rounded-lg hover:bg-indigo-50 transition"
+          disabled={house.status === "rentend"}
+        >
+          {house.status === "rentend" ? "Not Available" : "Book Now"}
         </button>
       </div>
       {openChat && <ChatBox house={house} onClose={() => setOpenChat(false)} />}
+      {openBookingModal && (
+        <BookingModal
+          house={house}
+          isOpen={openBookingModal}
+          onClose={() => setOpenBookingModal(false)}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </div>
   );
 }

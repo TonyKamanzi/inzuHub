@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, LogOut, Home, Plus, LayoutDashboard } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  Home,
+  Plus,
+  LayoutDashboard,
+  Calendar,
+} from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function LandlordSidebar() {
@@ -9,9 +17,22 @@ export default function LandlordSidebar() {
   const { logout } = useAuth();
 
   const navItems = [
-    { name: "Dashboard", path: "/landlord/dashboard", icon: <LayoutDashboard size={18} /> },
+    {
+      name: "Dashboard",
+      path: "/landlord/dashboard",
+      icon: <LayoutDashboard size={18} />,
+    },
     { name: "My Houses", path: "/landlord/houses", icon: <Home size={18} /> },
-    { name: "Add House", path: "/landlord/add-house", icon: <Plus size={18} /> },
+    {
+      name: "Bookings",
+      path: "/landlord/bookings",
+      icon: <Calendar size={18} />,
+    },
+    {
+      name: "Add House",
+      path: "/landlord/add-house",
+      icon: <Plus size={18} />,
+    },
   ];
 
   const isActive = (path) => location.pathname === path;

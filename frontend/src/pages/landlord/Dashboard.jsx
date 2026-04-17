@@ -4,15 +4,18 @@ import { useAuth } from "../../context/AuthContext";
 import landlordService from "../../api/landlordService";
 import { toast } from "react-toastify";
 import LandlordTopbar from "../../components/landlord/Topbar";
+import { Calendar, Clock, CheckCircle, XCircle, Users } from "lucide-react";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStats();
+    fetchBookings();
   }, []);
 
   const fetchStats = async () => {
@@ -24,6 +27,15 @@ export default function Dashboard() {
       toast.error(error.message || "Failed to load statistics");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchBookings = async () => {
+    try {
+      const data = await landlordService.getBookings();
+      setBookings(data || []);
+    } catch (error) {
+      console.error("Failed to load bookings:", error);
     }
   };
 
@@ -48,7 +60,7 @@ export default function Dashboard() {
             ))}
           </div>
         ) : stats ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             {/* Total Houses Card */}
             <div className="bg-white rounded-lg shadow p-6 bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200">
               <div className="flex items-center justify-between">
@@ -93,6 +105,23 @@ export default function Dashboard() {
                 <div className="text-4xl text-amber-500 opacity-20">👥</div>
               </div>
             </div>
+
+            {/* Pending Bookings Card */}
+            <div className="bg-white rounded-lg shadow p-6 bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-600 text-sm font-medium">
+                    Pending Bookings
+                  </p>
+                  <p className="text-3xl font-bold text-orange-600 mt-2">
+                    {bookings.filter((b) => b.status === "pending").length}
+                  </p>
+                </div>
+                <div className="text-4xl text-orange-500 opacity-20">
+                  <Calendar />
+                </div>
+              </div>
+            </div>
           </div>
         ) : null}
 
@@ -128,6 +157,85 @@ export default function Dashboard() {
               View My Houses
             </button>
           </div>
+
+          {/* Recent Bookings */}
+          {bookings.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-900">
+                  Recent Booking Requests
+                </h2>
+                <button
+                  onClick={() => navigate("/landlord/bookings")}
+                  className="text-indigo-600 hover:text-indigo-700 font-medium text-sm"
+                >
+                  View All Bookings
+                </button>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+                {bookings.slice(0, 3).map((booking) => (
+                  <div
+                    key={booking._id}
+                    className="p-4 border-b border-gray-100 last:border-b-0"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                              booking.status === "pending"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : booking.status === "approved"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {booking.status === "pending" && (
+                              <Clock className="w-3 h-3" />
+                            )}
+                            {booking.status === "approved" && (
+                              <CheckCircle className="w-3 h-3" />
+                            )}
+                            {booking.status === "rejected" && (
+                              <XCircle className="w-3 h-3" />
+                            )}
+                            {booking.status}
+                          </span>
+                          <span className="text-sm text-gray-600">
+                            {new Date(booking.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+
+                        <h4 className="font-medium text-gray-900 mb-1">
+                          {booking.house?.title || "House not available"}
+                        </h4>
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <span className="flex items-center gap-1">
+                            <Users className="w-4 h-4" />
+                            {booking.tenant?.name || "Unknown"}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {new Date(booking.date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+
+                      {booking.status === "pending" && (
+                        <button
+                          onClick={() => navigate("/landlord/bookings")}
+                          className="px-3 py-1 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition"
+                        >
+                          Review
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

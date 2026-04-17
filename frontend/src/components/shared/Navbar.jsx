@@ -1,6 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Menu, LogOut, User, Settings, Heart, Home } from "lucide-react";
+import {
+  Menu,
+  LogOut,
+  User,
+  Settings,
+  Heart,
+  Home,
+  Calendar,
+} from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
 
@@ -151,6 +159,14 @@ export default function Navbar() {
                         >
                           <Heart className="w-4 h-4" />
                           My Favorites
+                        </Link>
+
+                        <Link
+                          to="/tenant/bookings"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                        >
+                          <Calendar className="w-4 h-4" />
+                          My Bookings
                         </Link>
                       </>
                     )}
