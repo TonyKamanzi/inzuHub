@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
+import NotificationBadge from "./NotificationBadge";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +68,7 @@ export default function Navbar() {
                 Browse Houses
               </a>
             </li>
+
             {isAuthenticated && user?.role === "tenant" && (
               <>
                 <li>
@@ -87,6 +89,7 @@ export default function Navbar() {
                 </li>
               </>
             )}
+
             {isAuthenticated && user?.role === "landlord" && (
               <li>
                 <Link
@@ -97,6 +100,7 @@ export default function Navbar() {
                 </Link>
               </li>
             )}
+
             {isAuthenticated &&
               (user?.role === "landlord" || user?.role === "admin") && (
                 <li>
@@ -113,107 +117,113 @@ export default function Navbar() {
           {/* Desktop Buttons / User Menu */}
           <div className="hidden md:flex items-center space-x-3">
             {isAuthenticated ? (
-              <div className="relative">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all"
-                >
-                  <User className="w-4 h-4" />
-                  <span>{user?.name}</span>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${getRoleBadgeColor(user?.role)}`}
-                  >
-                    {user?.role}
-                  </span>
-                </motion.button>
+              <>
+                <NotificationBadge />
 
-                {/* Dropdown Menu */}
-                {isUserMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200"
+                <div className="relative">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all"
                   >
-                    <div className="px-4 py-3 border-b border-gray-200">
-                      <p className="font-semibold text-gray-800">
-                        {user?.name}
-                      </p>
-                      <p className="text-xs text-gray-500">{user?.role}</p>
-                    </div>
+                    <User className="w-4 h-4" />
+                    <span>{user?.name}</span>
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full ${getRoleBadgeColor(
+                        user?.role,
+                      )}`}
+                    >
+                      {user?.role}
+                    </span>
+                  </motion.button>
 
-                    {user?.role === "tenant" && (
-                      <>
+                  {/* Dropdown Menu */}
+                  {isUserMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200"
+                    >
+                      <div className="px-4 py-3 border-b border-gray-200">
+                        <p className="font-semibold text-gray-800">
+                          {user?.name}
+                        </p>
+                        <p className="text-xs text-gray-500">{user?.role}</p>
+                      </div>
+
+                      {user?.role === "tenant" && (
+                        <>
+                          <Link
+                            to="/profile"
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                          >
+                            <User className="w-4 h-4" />
+                            My Profile
+                          </Link>
+
+                          <Link
+                            to="/favorites"
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                          >
+                            <Heart className="w-4 h-4" />
+                            My Favorites
+                          </Link>
+
+                          <Link
+                            to="/tenant/bookings"
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                          >
+                            <Calendar className="w-4 h-4" />
+                            My Bookings
+                          </Link>
+                        </>
+                      )}
+
+                      {user?.role === "landlord" && (
                         <Link
-                          to="/profile"
+                          to="/landlord/dashboard"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                        >
+                          <Home className="w-4 h-4" />
+                          My Properties
+                        </Link>
+                      )}
+
+                      {!["tenant", "landlord"].includes(user?.role) && (
+                        <a
+                          href="#profile"
                           className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
                         >
                           <User className="w-4 h-4" />
-                          My Profile
-                        </Link>
+                          Profile
+                        </a>
+                      )}
 
+                      {user?.role === "admin" && (
                         <Link
-                          to="/favorites"
+                          to="/admin"
                           className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
                         >
-                          <Heart className="w-4 h-4" />
-                          My Favorites
+                          <Settings className="w-4 h-4" />
+                          Admin Panel
                         </Link>
+                      )}
 
-                        <Link
-                          to="/tenant/bookings"
-                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
-                        >
-                          <Calendar className="w-4 h-4" />
-                          My Bookings
-                        </Link>
-                      </>
-                    )}
-
-                    {user?.role === "landlord" && (
-                      <Link
-                        to="/landlord/dashboard"
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsUserMenuOpen(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 transition border-t border-gray-200"
                       >
-                        <Home className="w-4 h-4" />
-                        My Properties
-                      </Link>
-                    )}
-
-                    {!["tenant", "landlord"].includes(user?.role) && (
-                      <a
-                        href="#profile"
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
-                      >
-                        <User className="w-4 h-4" />
-                        Profile
-                      </a>
-                    )}
-
-                    {user?.role === "admin" && (
-                      <Link
-                        to="/admin"
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 transition"
-                      >
-                        <Settings className="w-4 h-4" />
-                        Admin Panel
-                      </Link>
-                    )}
-
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setIsUserMenuOpen(false);
-                      }}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 transition border-t border-gray-200"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Logout
-                    </button>
-                  </motion.div>
-                )}
-              </div>
+                        <LogOut className="w-4 h-4" />
+                        Logout
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
+              </>
             ) : (
               <>
                 <Link
@@ -251,45 +261,48 @@ export default function Navbar() {
           >
             <Link
               to="/"
-              className="block px-4 font-sans text-gray-800 hover:text-blue-600 transition"
+              className="block px-4 text-gray-800 hover:text-blue-600 transition"
             >
               Home
             </Link>
             <Link
               to="/houses"
-              className="block px-4 font-sans text-gray-800 hover:text-blue-600 transition"
+              className="block px-4 text-gray-800 hover:text-blue-600 transition"
             >
               Browse Houses
             </Link>
+
             {isAuthenticated && user?.role === "tenant" && (
               <>
                 <Link
                   to="/favorites"
-                  className="block px-4 font-sans text-gray-800 hover:text-red-600 transition"
+                  className="block px-4 text-gray-800 hover:text-red-600 transition"
                 >
                   My Favorites
                 </Link>
                 <Link
                   to="/profile"
-                  className="block px-4 font-sans text-gray-800 hover:text-blue-600 transition"
+                  className="block px-4 text-gray-800 hover:text-blue-600 transition"
                 >
                   My Profile
                 </Link>
               </>
             )}
+
             {isAuthenticated && user?.role === "landlord" && (
               <Link
                 to="/landlord/dashboard"
-                className="block px-4 font-sans text-gray-800 hover:text-purple-600 transition"
+                className="block px-4 text-gray-800 hover:text-purple-600 transition"
               >
                 My Properties
               </Link>
             )}
+
             {isAuthenticated &&
               (user?.role === "landlord" || user?.role === "admin") && (
                 <Link
                   to="/become-a-landlord"
-                  className="block px-4 font-sans text-gray-800 hover:text-blue-600 transition"
+                  className="block px-4 text-gray-800 hover:text-blue-600 transition"
                 >
                   Become a Landlord
                 </Link>
@@ -299,16 +312,19 @@ export default function Navbar() {
               <div className="px-4 pt-2 space-y-2 border-t border-stone-300">
                 <p className="font-semibold text-gray-800">{user?.name}</p>
                 <p
-                  className={`inline-block text-xs px-2 py-1 rounded-full ${getRoleBadgeColor(user?.role)}`}
+                  className={`inline-block text-xs px-2 py-1 rounded-full ${getRoleBadgeColor(
+                    user?.role,
+                  )}`}
                 >
                   {user?.role}
                 </p>
+
                 <button
                   onClick={() => {
                     handleLogout();
                     setIsOpen(false);
                   }}
-                  className="w-full flex items-center gap-2 mt-4 border border-red-500 text-red-600 px-4 py-2 rounded text-center justify-center hover:bg-red-50 transition"
+                  className="w-full flex items-center gap-2 mt-4 border border-red-500 text-red-600 px-4 py-2 rounded justify-center hover:bg-red-50 transition"
                 >
                   <LogOut className="w-4 h-4" />
                   Logout

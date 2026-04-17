@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useNotification } from "../../context/NotificationContext";
 import landlordService from "../../api/landlordService";
 import { toast } from "react-toastify";
 import LandlordTopbar from "../../components/landlord/Topbar";
-import { Calendar, User, Home, CheckCircle, XCircle, Clock, Filter } from "lucide-react";
+import {
+  Calendar,
+  User,
+  Home,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Filter,
+} from "lucide-react";
 
 export default function Bookings() {
   const { user } = useAuth();
+  const notificationContext = useNotification();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // all, pending, approved, rejected
@@ -31,17 +41,29 @@ export default function Bookings() {
   const handleStatusUpdate = async (bookingId, newStatus) => {
     try {
       setUpdating(bookingId);
-      await landlordService.updateBookingStatus(bookingId, newStatus);
-      
-      // Update local state
-      setBookings(prev => 
-        prev.map(booking => 
-          booking._id === bookingId 
-            ? { ...booking, status: newStatus }
-            : booking
-        )
+      const updatedBooking = await landlordService.updateBookingStatus(
+        bookingId,
+        newStatus,
       );
-      
+
+      // Update local state
+      setBookings((prev) =>
+        prev.map((booking) =>
+          booking._id === bookingId
+            ? { ...booking, status: newStatus }
+            : booking,
+        ),
+      );
+
+      // Trigger notification for tenant
+      const booking = bookings.find((b) => b._id === bookingId);
+      if (booking) {
+        notificationContext.triggerBookingNotification(`booking_${newStatus}`, {
+          houseTitle: booking.house?.title,
+          tenantName: booking.tenant?.name,
+        });
+      }
+
       toast.success(`Booking ${newStatus} successfully`);
     } catch (error) {
       toast.error(error.message || "Failed to update booking");
@@ -50,7 +72,7 @@ export default function Bookings() {
     }
   };
 
-  const filteredBookings = bookings.filter(booking => {
+  const filteredBookings = bookings.filter((booking) => {
     if (filter === "all") return true;
     return booking.status === filter;
   });
@@ -88,7 +110,10 @@ export default function Bookings() {
         <div className="p-8">
           <div className="grid grid-cols-1 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded-lg animate-pulse"></div>
+              <div
+                key={i}
+                className="h-32 bg-gray-200 rounded-lg animate-pulse"
+              ></div>
             ))}
           </div>
         </div>
@@ -103,7 +128,9 @@ export default function Bookings() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Booking Requests</h1>
-          <p className="text-gray-600 mt-2">Manage tenant booking requests for your properties</p>
+          <p className="text-gray-600 mt-2">
+            Manage tenant booking requests for your properties
+          </p>
         </div>
 
         {/* Filter Tabs */}
@@ -122,7 +149,11 @@ export default function Bookings() {
               >
                 {status}
                 <span className="ml-2 text-xs">
-                  ({status === "all" ? bookings.length : bookings.filter(b => b.status === status).length})
+                  (
+                  {status === "all"
+                    ? bookings.length
+                    : bookings.filter((b) => b.status === status).length}
+                  )
                 </span>
               </button>
             ))}
@@ -133,24 +164,30 @@ export default function Bookings() {
         {filteredBookings.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">Calendar</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No {filter === "all" ? "" : filter} bookings</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No {filter === "all" ? "" : filter} bookings
+            </h3>
             <p className="text-gray-600">
-              {filter === "all" 
+              {filter === "all"
                 ? "You don't have any booking requests yet."
-                : `You don't have any ${filter} bookings.`
-              }
+                : `You don't have any ${filter} bookings.`}
             </p>
           </div>
         ) : (
           <div className="space-y-4">
             {filteredBookings.map((booking) => (
-              <div key={booking._id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div
+                key={booking._id}
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+              >
                 <div className="flex items-start justify-between">
                   {/* Left Content */}
                   <div className="flex-1">
                     {/* Status Badge */}
                     <div className="mb-3">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}>
+                      <span
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}
+                      >
                         {getStatusIcon(booking.status)}
                         {booking.status}
                       </span>
@@ -166,17 +203,22 @@ export default function Bookings() {
                         {booking.house?.location || "Location not specified"}
                       </p>
                       <p className="text-indigo-600 font-semibold">
-                        {booking.house?.price?.toLocaleString() || 0} RWF / month
+                        {booking.house?.price?.toLocaleString() || 0} RWF /
+                        month
                       </p>
                     </div>
 
                     {/* Tenant Info */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Tenant Information</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">
+                        Tenant Information
+                      </h4>
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <User className="w-4 h-4" />
                         <span>{booking.tenant?.name || "Unknown"}</span>
-                        <span className="text-gray-400">({booking.tenant?.email || "No email"})</span>
+                        <span className="text-gray-400">
+                          ({booking.tenant?.email || "No email"})
+                        </span>
                       </div>
                     </div>
 
@@ -213,7 +255,9 @@ export default function Bookings() {
                     {booking.status === "pending" && (
                       <div className="flex flex-col gap-2">
                         <button
-                          onClick={() => handleStatusUpdate(booking._id, "approved")}
+                          onClick={() =>
+                            handleStatusUpdate(booking._id, "approved")
+                          }
                           disabled={updating === booking._id}
                           className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                         >
@@ -227,7 +271,9 @@ export default function Bookings() {
                           )}
                         </button>
                         <button
-                          onClick={() => handleStatusUpdate(booking._id, "rejected")}
+                          onClick={() =>
+                            handleStatusUpdate(booking._id, "rejected")
+                          }
                           disabled={updating === booking._id}
                           className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                         >

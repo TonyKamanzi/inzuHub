@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useNotification } from "../../context/NotificationContext";
 import landlordService from "../../api/landlordService";
 import { toast } from "react-toastify";
 import LandlordTopbar from "../../components/landlord/Topbar";
@@ -9,14 +10,36 @@ import { Calendar, Clock, CheckCircle, XCircle, Users } from "lucide-react";
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const notificationContext = useNotification();
   const [stats, setStats] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [previousBookingCount, setPreviousBookingCount] = useState(0);
 
   useEffect(() => {
     fetchStats();
     fetchBookings();
   }, []);
+
+  // Monitor for new bookings and trigger notifications
+  useEffect(() => {
+    const currentBookingCount = bookings.length;
+    const newBookings = bookings.slice(
+      0,
+      currentBookingCount - previousBookingCount,
+    );
+
+    // Trigger notification for each new booking
+    newBookings.forEach((booking) => {
+      notificationContext.triggerBookingNotification("booking_created", {
+        houseTitle: booking.house?.title,
+        tenantName: booking.tenant?.name,
+        showToast: false, // Don't show toast for auto-triggered notifications
+      });
+    });
+
+    setPreviousBookingCount(currentBookingCount);
+  }, [bookings]);
 
   const fetchStats = async () => {
     try {

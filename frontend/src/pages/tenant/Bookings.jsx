@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useNotification } from "../../context/NotificationContext";
 import tenantBookingService from "../../services/tenantBookingService";
 import { toast } from "react-toastify";
-import { Calendar, User, Home, CheckCircle, XCircle, Clock, Filter, MessageCircle } from "lucide-react";
+import {
+  Calendar,
+  User,
+  Home,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Filter,
+  MessageCircle,
+} from "lucide-react";
 
 export default function Bookings() {
   const { user } = useAuth();
+  const notificationContext = useNotification();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // all, pending, approved, rejected
@@ -26,7 +37,44 @@ export default function Bookings() {
     }
   };
 
-  const filteredBookings = bookings.filter(booking => {
+  // Monitor booking status changes and trigger notifications
+  useEffect(() => {
+    const checkForStatusUpdates = async () => {
+      try {
+        const latestBookings = await tenantBookingService.getBookings();
+        if (latestBookings) {
+          latestBookings.forEach((latestBooking) => {
+            const existingBooking = bookings.find(
+              (b) => b._id === latestBooking._id,
+            );
+            if (
+              existingBooking &&
+              existingBooking.status !== latestBooking.status
+            ) {
+              // Status changed, trigger notification
+              notificationContext.triggerBookingNotification(
+                `booking_${latestBooking.status}`,
+                {
+                  houseTitle: latestBooking.house?.title,
+                  landlordName: latestBooking.landlord?.name,
+                  showToast: false, // Don't show toast for status change notifications
+                },
+              );
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error checking for booking updates:", error);
+      }
+    };
+
+    // Check for updates every 30 seconds
+    const interval = setInterval(checkForStatusUpdates, 30000);
+
+    return () => clearInterval(interval);
+  }, [bookings, notificationContext]);
+
+  const filteredBookings = bookings.filter((booking) => {
     if (filter === "all") return true;
     return booking.status === filter;
   });
@@ -76,11 +124,16 @@ export default function Bookings() {
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
-            <p className="text-gray-600 mt-2">Track your rental booking requests</p>
+            <p className="text-gray-600 mt-2">
+              Track your rental booking requests
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-40 bg-gray-200 rounded-lg animate-pulse"></div>
+              <div
+                key={i}
+                className="h-40 bg-gray-200 rounded-lg animate-pulse"
+              ></div>
             ))}
           </div>
         </div>
@@ -94,7 +147,9 @@ export default function Bookings() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
-          <p className="text-gray-600 mt-2">Track your rental booking requests and their status</p>
+          <p className="text-gray-600 mt-2">
+            Track your rental booking requests and their status
+          </p>
         </div>
 
         {/* Filter Tabs */}
@@ -113,7 +168,11 @@ export default function Bookings() {
               >
                 {status}
                 <span className="ml-2 text-xs">
-                  ({status === "all" ? bookings.length : bookings.filter(b => b.status === status).length})
+                  (
+                  {status === "all"
+                    ? bookings.length
+                    : bookings.filter((b) => b.status === status).length}
+                  )
                 </span>
               </button>
             ))}
@@ -124,15 +183,16 @@ export default function Bookings() {
         {filteredBookings.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-gray-400 text-6xl mb-4">Calendar</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No {filter === "all" ? "" : filter} bookings</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No {filter === "all" ? "" : filter} bookings
+            </h3>
             <p className="text-gray-600 mb-4">
-              {filter === "all" 
+              {filter === "all"
                 ? "You haven't made any booking requests yet."
-                : `You don't have any ${filter} bookings.`
-              }
+                : `You don't have any ${filter} bookings.`}
             </p>
             <button
-              onClick={() => window.location.href = "/"}
+              onClick={() => (window.location.href = "/")}
               className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
             >
               Browse Properties
@@ -141,17 +201,24 @@ export default function Bookings() {
         ) : (
           <div className="space-y-4">
             {filteredBookings.map((booking) => (
-              <div key={booking._id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div
+                key={booking._id}
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+              >
                 <div className="flex items-start justify-between">
                   {/* Left Content */}
                   <div className="flex-1">
                     {/* Status Badge */}
                     <div className="mb-3">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}>
+                      <span
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(booking.status)}`}
+                      >
                         {getStatusIcon(booking.status)}
                         {booking.status}
                       </span>
-                      <p className="text-sm text-gray-600 mt-1">{getStatusMessage(booking.status)}</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {getStatusMessage(booking.status)}
+                      </p>
                     </div>
 
                     {/* House Info */}
@@ -164,17 +231,22 @@ export default function Bookings() {
                         {booking.house?.location || "Location not specified"}
                       </p>
                       <p className="text-indigo-600 font-semibold">
-                        {booking.house?.price?.toLocaleString() || 0} RWF / month
+                        {booking.house?.price?.toLocaleString() || 0} RWF /
+                        month
                       </p>
                     </div>
 
                     {/* Landlord Info */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-medium text-gray-700 mb-2">Landlord Information</h4>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">
+                        Landlord Information
+                      </h4>
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <User className="w-4 h-4" />
                         <span>{booking.landlord?.name || "Unknown"}</span>
-                        <span className="text-gray-400">({booking.landlord?.email || "No email"})</span>
+                        <span className="text-gray-400">
+                          ({booking.landlord?.email || "No email"})
+                        </span>
                       </div>
                     </div>
 
@@ -198,7 +270,9 @@ export default function Bookings() {
                     {/* Message */}
                     {booking.message && (
                       <div className="mt-4">
-                        <span className="text-gray-500 text-sm">Your Message:</span>
+                        <span className="text-gray-500 text-sm">
+                          Your Message:
+                        </span>
                         <p className="text-gray-700 bg-gray-50 p-3 rounded-md text-sm mt-1">
                           {booking.message}
                         </p>
@@ -210,7 +284,8 @@ export default function Bookings() {
                       <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
                         <p className="text-green-800 text-sm">
                           <CheckCircle className="w-4 h-4 inline-block mr-1" />
-                          Your booking has been approved! Contact the landlord for next steps.
+                          Your booking has been approved! Contact the landlord
+                          for next steps.
                         </p>
                       </div>
                     )}
@@ -219,10 +294,11 @@ export default function Bookings() {
                       <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
                         <p className="text-red-800 text-sm">
                           <XCircle className="w-4 h-4 inline-block mr-1" />
-                          This booking was not approved. Feel free to browse other properties.
+                          This booking was not approved. Feel free to browse
+                          other properties.
                         </p>
                         <button
-                          onClick={() => window.location.href = "/"}
+                          onClick={() => (window.location.href = "/")}
                           className="mt-2 px-4 py-1 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 transition"
                         >
                           Browse Other Properties
