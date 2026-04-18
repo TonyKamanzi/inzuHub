@@ -51,7 +51,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-7 h-7  rounded-lg flex items-center justify-center">
-              <img src="/logo.png" className=" text-white" />
+              <img src="/logo.png" className=" w-7 h-7 text-white" />
             </div>
             <span className="font-semibold text-gray-900 tracking-tight">
               inzuHub
@@ -60,16 +60,16 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <ul className="hidden md:flex items-center gap-1">
-           {[
+            {[
               { to: "/", label: "Home" },
               { to: "#houses", label: "Browse Houses" },
-              ...(isAuthenticated && user?.role === "Tenant"
+              ...(isAuthenticated && user?.role === "tenant"
                 ? [
                     { to: "/favorites", label: "Favorites" },
                     { to: "/tenant/bookings", label: "My Bookings" },
                   ]
                 : []),
-              ...(isAuthenticated && user?.role === "Landlord"
+              ...(isAuthenticated && user?.role === "landlord"
                 ? [{ to: "/landlord/dashboard", label: "My Properties" }]
                 : []),
             ].map(({ to, label }) => (
@@ -214,17 +214,17 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden border-t border-gray-100 bg-white overflow-hidden"
           >
-            <div className="px-2 py-4 space-y-1">
+            <div className="px-5 py-4 space-y-1">
               {[
                 { to: "/", label: "Home" },
                 { to: "#houses", label: "Browse Houses" },
-                ...(isAuthenticated && user?.role === "Tenant"
+                ...(isAuthenticated && user?.role === "tenant"
                   ? [
                       { to: "/favorites", label: "Favorites" },
                       { to: "/tenant/bookings", label: "My Bookings" },
                     ]
                   : []),
-                ...(isAuthenticated && user?.role === "Landlord"
+                ...(isAuthenticated && user?.role === "landlord"
                   ? [{ to: "/landlord/dashboard", label: "My Properties" }]
                   : []),
               ].map(({ to, label }) => (
