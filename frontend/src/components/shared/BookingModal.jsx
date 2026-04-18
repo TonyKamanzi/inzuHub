@@ -12,22 +12,22 @@ export default function BookingModal({ house, isOpen, onClose, onSuccess }) {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
       const bookingData = {
         houseId: house._id,
         moveInDate,
         message: message || "Interested in this property",
       };
-
       const response = await bookingService.createBooking(bookingData);
-      
       if (response) {
         onSuccess(response);
         onClose();
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to submit booking. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          "Failed to submit booking. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -45,88 +45,98 @@ export default function BookingModal({ house, isOpen, onClose, onSuccess }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full p-6 relative">
-        {/* Close Button */}
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full p-8 relative shadow-xl">
+        {/* Close */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
           disabled={loading}
+          className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition disabled:opacity-40"
         >
-          <X className="w-6 h-6" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Header */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Book This Property</h2>
-          <p className="text-gray-600 mt-1">{house.title}</p>
-          <p className="text-lg font-semibold text-indigo-600 mt-2">
-            {house.price?.toLocaleString()} RWF / month
-          </p>
-        </div>
+        <p className="text-xs font-medium uppercase tracking-widest text-gray-400 mb-1">
+          Request a booking
+        </p>
+        <h2 className="text-xl font-semibold text-gray-900 leading-snug mb-1">
+          {house.title}
+        </h2>
+        <p className="text-sm font-medium text-blue-500 mb-5">
+          {house.price?.toLocaleString()} RWF / month
+        </p>
+
+        <hr className="border-gray-100 mb-5" />
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Move-in Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <Calendar className="w-4 h-4 inline-block mr-1" />
-              Move-in Date *
+            <label className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+              <Calendar className="w-3.5 h-3.5" />
+              Move-in date{" "}
+              <span className="text-red-400 normal-case tracking-normal">
+                *
+              </span>
             </label>
             <input
               type="date"
               value={moveInDate}
               onChange={(e) => setMoveInDate(e.target.value)}
               required
-              min={new Date().toISOString().split('T')[0]}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              min={new Date().toISOString().split("T")[0]}
               disabled={loading}
+              className="w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 outline-none focus:border-blue-400 focus:bg-white transition disabled:opacity-50"
             />
           </div>
 
           {/* Message */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              <MessageSquare className="w-4 h-4 inline-block mr-1" />
-              Message to Landlord (Optional)
+            <label className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+              <MessageSquare className="w-3.5 h-3.5" />
+              Message
+              <span className="normal-case tracking-normal font-normal text-gray-300 ml-1">
+                (optional)
+              </span>
             </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
-              placeholder="Tell the landlord why you're interested in this property..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+              placeholder="Tell the landlord why you're interested…"
               disabled={loading}
+              className="w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 outline-none focus:border-blue-400 focus:bg-white transition resize-none disabled:opacity-50"
             />
           </div>
 
-          {/* Error Message */}
+          {/* Error */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-md text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2.5 rounded-xl">
               {error}
             </div>
           )}
 
-          {/* Submit Button */}
-          <div className="flex gap-3 pt-2">
+          {/* Actions */}
+          <div className="grid grid-cols-[1fr_1.5fr] gap-3 pt-1">
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition disabled:opacity-50"
               disabled={loading}
+              className="py-2.5 border border-gray-200 text-sm font-medium text-gray-600 rounded-xl hover:bg-gray-50 transition disabled:opacity-40"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading || !moveInDate}
+              className="py-2.5 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
-                <span className="flex items-center justify-center">
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  Submitting...
-                </span>
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Submitting…
+                </>
               ) : (
                 "Submit Booking"
               )}
