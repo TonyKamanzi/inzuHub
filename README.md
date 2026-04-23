@@ -12,4 +12,6 @@ InzuHub is a full-stack web application that allows users to browse rental house
 - Tenant can search and contact landlords
 - Admin dashboard to manage users and properties
 - Chat system between tenants and landlords
+- Booking the property directly to the landlord
+- Landlord approve or rejects the booking
 - Dockerized backend, frontend, and MongoDB
