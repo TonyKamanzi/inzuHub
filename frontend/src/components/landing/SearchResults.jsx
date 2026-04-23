@@ -65,7 +65,7 @@ export default function SearchResults({ searchParams, onClose }) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto my-12 px-4">
+    <div className="max-w-7xl mx-auto my-12 px-4 font-serif">
       {/* Header with close button */}
       <div className="flex items-center justify-between mb-8">
         <div>
