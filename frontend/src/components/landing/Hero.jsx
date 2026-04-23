@@ -1,5 +1,6 @@
-import { Verified, Search } from "lucide-react";
+import { Verified, Search, Plus } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero({ onSearch }) {
   const [location, setLocation] = useState("");
@@ -34,40 +35,40 @@ export default function Hero({ onSearch }) {
       <div className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <div>
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-indigo-200 px-4 py-1.5 rounded-full text-sm mb-6 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-indigo-200 px-4 py-1.5 rounded-full font-serif mb-6 backdrop-blur-sm text-lg ">
             ⭐ Rwanda's #1 Rental Platform
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-5">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-5 font-serif">
             Find Your Perfect{" "}
             <span className="text-yellow-300 drop-shadow-sm">Home</span> in
             Rwanda
           </h1>
 
-          <p className="text-indigo-100/80 mb-8 max-w-md text-base leading-relaxed">
+          <p className="text-indigo-100/80 mb-8 max-w-md  leading-relaxed font-serif text-xl">
             Browse verified houses, connect with trusted landlords, and move in
             with confidence — all in one place.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-3 mb-8">
-            
-            ,<a  href="#"
-              className="bg-yellow-400 hover:bg-yellow-300 text-gray-900 px-6 py-3 rounded-xl font-semibold shadow-lg flex items-center gap-2 w-full md:w-auto justify-center transition-all duration-200 hover:scale-105"
+            ,
+            <Link
+              to={"/all-houses"}
+              className="bg-yellow-400 hover:bg-yellow-300 text-white font-serif text-xl px-6 py-3 rounded-full font-semibold shadow-lg flex items-center gap-2 w-full md:w-auto justify-center transition-all duration-200 hover:scale-105"
             >
               <Search className="w-4 h-4" /> Browse Houses
-            </a>
-
-            
-             <a href="#"
-              className="bg-white/10 border border-white/25 text-white px-6 py-3 rounded-xl backdrop-blur-sm hover:bg-white/20 w-full md:w-auto flex items-center gap-2 justify-center transition-all duration-200 hover:scale-105 shadow-lg"
+            </Link>
+            <Link
+              to="/landlord/dashboard"
+              className="bg-white/10 border border-white/25 text-white px-6 py-3 rounded-full backdrop-blur-sm hover:bg-white/20 w-full md:w-auto flex items-center gap-2 justify-center transition-all duration-200 hover:scale-105 shadow-lg font-serif text-xl "
             >
-              ➕ List Property
-            </a>
+              <Plus /> List Property
+            </Link>
           </div>
 
           {/* Search Bar */}
-          <div className="bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl p-3 flex flex-wrap gap-2 shadow-xl">
+          <div className="bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl p-3 flex flex-wrap gap-2 shadow-xl font-serif">
             <input
               type="text"
               placeholder="Location (e.g., Kigali, Butare, Rubavu)"
@@ -118,7 +119,9 @@ export default function Hero({ onSearch }) {
               { value: "650+", label: "Landlords" },
             ].map((stat) => (
               <div key={stat.label} className="text-center md:text-left">
-                <p className="text-2xl font-bold text-yellow-300">{stat.value}</p>
+                <p className="text-2xl font-bold text-yellow-300">
+                  {stat.value}
+                </p>
                 <span className="text-indigo-200 text-sm">{stat.label}</span>
               </div>
             ))}
@@ -126,9 +129,13 @@ export default function Hero({ onSearch }) {
         </div>
 
         {/* Right — Floating Card */}
-        <div className="relative hidden md:flex justify-center items-center">
+        <div className="relative hidden md:flex justify-center items-center font-serif">
           <div className="rounded-2xl shadow-2xl p-5 bg-white/10 border border-white/20 backdrop-blur-md animate-[float_4s_ease-in-out_infinite]">
-            <img src="/logo.png" className="rounded-xl w-full max-w-sm" alt="Platform preview" />
+            <img
+              src="/logo.png"
+              className="rounded-xl w-full max-w-sm"
+              alt="Platform preview"
+            />
           </div>
 
           {/* Badge: New Listings */}
@@ -140,7 +147,9 @@ export default function Hero({ onSearch }) {
           {/* Badge: Verified */}
           <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg text-sm animate-[float_5s_ease-in-out_infinite] flex items-center gap-2">
             <Verified className="w-4 h-4 text-green-500" />
-            <span className="font-medium text-gray-800">Verified Properties</span>
+            <span className="font-medium text-gray-800">
+              Verified Properties
+            </span>
           </div>
         </div>
       </div>
