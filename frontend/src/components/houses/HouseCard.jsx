@@ -17,25 +17,10 @@ export default function HouseCard({
     onToggleFavorite?.(house._id);
   };
 
-  // ✅ NEW: Badge logic (SAFE - won't break if fields don't exist)
-  const isNew = () => {
-    if (!house.createdAt) return false;
-    const days =
-      (Date.now() - new Date(house.createdAt)) / (1000 * 60 * 60 * 24);
-    return days <= 7;
-  };
-
-  const isPopular =
-    (house.views && house.views > 100) ||
-    (house.bookings && house.bookings > 10);
-
   return (
     <div
       onClick={handleCardClick}
-      className="group bg-white rounded-2xl border border-gray-100 overflow-hidden cursor-pointer
-                 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl
-                 hover:shadow-indigo-100 hover:border-indigo-200"
-    >
+      className="group bg-white rounded-2xl border border-gray-100 overflow-hidden cursor-pointer   transition-all duration-200 hover:-translate-y-1 hover:shadow-xl font-sans hover:shadow-indigo-100 hover:border-indigo-200"    >
       {/* Image */}
       <div className="relative h-44 overflow-hidden bg-indigo-50">
         <img
@@ -44,21 +29,6 @@ export default function HouseCard({
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-
-        {/* ✅ NEW: Badges */}
-        <div className="absolute top-2.5 left-2.5 flex gap-2 z-10">
-          {isNew() && (
-            <span className="bg-green-500 text-white text-[10px] px-2 py-1 rounded-full font-semibold shadow">
-               New
-            </span>
-          )}
-
-          {isPopular && (
-            <span className="bg-yellow-400 text-gray-900 text-[10px] px-2 py-1 rounded-md font-semibold shadow">
-              🔥 Popular
-            </span>
-          )}
-        </div>
 
         {/* Favorite Button */}
         <button
