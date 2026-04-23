@@ -53,13 +53,13 @@ export default function Navbar() {
             <div className="w-7 h-7  rounded-lg flex items-center justify-center">
               <img src="/logo.png" className=" w-7 h-7 text-white" />
             </div>
-            <span className="font-semibold text-gray-900 tracking-tight">
+            <span className="font-semibold text-gray-900 tracking-tight font-serif">
               inzuHub
             </span>
           </Link>
 
           {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-1">
+          <ul className="hidden md:flex items-center gap-1 ">
             {[
               { to: "/", label: "Home" },
               { to: "#houses", label: "Browse Houses" },
@@ -296,7 +296,7 @@ function DropdownItem({ to, icon, label }) {
   return (
     <Link
       to={to}
-      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition"
+      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition font-serif"
     >
       <span className="text-gray-400">{icon}</span>
       {label}

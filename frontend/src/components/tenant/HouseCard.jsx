@@ -93,7 +93,7 @@ export default function HouseCard({ house, isFavorite, onToggleFavorite }) {
               <span className="flex items-center gap-1">
                 <span className="font-semibold">{house.rooms}</span> Rooms
               </span>
-            )}
+            )}z
             {house.bathrooms && (
               <span className="flex items-center gap-1">
                 <span className="font-semibold">{house.bathrooms}</span> Bath
