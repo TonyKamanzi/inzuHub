@@ -48,7 +48,7 @@ export default function HouseCard({
         {/* ✅ NEW: Badges */}
         <div className="absolute top-2.5 left-2.5 flex gap-2 z-10">
           {isNew() && (
-            <span className="bg-green-500 text-white text-[10px] px-2 py-1 rounded- font-semibold shadow">
+            <span className="bg-green-500 text-white text-[10px] px-2 py-1 rounded-full font-semibold shadow">
                New
             </span>
           )}
