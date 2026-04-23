@@ -45,9 +45,9 @@ export default function Navbar() {
       .toUpperCase() || "?";
 
   return (
-    <header className="bg-white border-b border-gray-100 fixed w-full z-10">
+    <header className="bg-white border-b border-gray-100 z-50 w-full fixed">
       <div className="max-w-7xl mx-auto px-5">
-        <nav className="flex items-center justify-between h-[60px]">
+        <nav className="flex items-center justify-between h-15">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-7 h-7  rounded-lg flex items-center justify-center">
@@ -187,7 +187,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   to="/signup"
-                  className="text-sm font-medium text-white bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-700 transition"
+                  className="text-sm font-medium text-white bg-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
                 >
                   Sign Up
                 </Link>
