@@ -102,7 +102,7 @@ export default function AdminHouses() {
                     <div className="flex items-center gap-2">
                       <span className="text-green-500">Rwf</span>
                       <span className="font-semibold text-gray-900">
-                        ${house.price?.toLocaleString()} / <span className="text-gray-500">month</span>
+                        {house.price?.toLocaleString()} / <span className="text-gray-500">month</span>
                       </span>
                     </div>
                     {house.landlord && (
