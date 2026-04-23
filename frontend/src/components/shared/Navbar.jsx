@@ -217,7 +217,7 @@ export default function Navbar() {
             <div className="px-5 py-4 space-y-1">
               {[
                 { to: "/", label: "Home" },
-                { to: "#houses", label: "Browse Houses" },
+                { to: "/all-houses", label: "Browse Houses" },
                 ...(isAuthenticated && user?.role === "tenant"
                   ? [
                       { to: "/favorites", label: "Favorites" },

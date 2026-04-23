@@ -19,29 +19,23 @@ export default function Houses() {
       try {
         const data = await getHouses();
         setHouses(data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching houses:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchHouses();
-
-    // Fetch favorites if user is logged in
-    if (user) {
-      fetchFavorites();
-    }
+    if (user) fetchFavorites();
   }, [user]);
 
   const fetchFavorites = async () => {
     try {
-      console.log("[Houses] Fetching favorites for user:", user?.id);
       const data = await favoriteService.getFavorites();
-      console.log("[Houses] Got favorites:", data);
-      const ids = new Set(data.map((house) => house._id));
-      setFavoriteIds(ids);
+      setFavoriteIds(new Set(data.map((house) => house._id)));
     } catch (error) {
-      console.error("[Houses] Error fetching favorites:", error);
+      console.error("Error fetching favorites:", error);
     }
   };
 
@@ -53,13 +47,12 @@ export default function Houses() {
     }
 
     try {
-      console.log("[Houses] Toggling favorite:", houseId);
       if (favoriteIds.has(houseId)) {
         await favoriteService.removeFavorite(houseId);
         setFavoriteIds((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(houseId);
-          return newSet;
+          const next = new Set(prev);
+          next.delete(houseId);
+          return next;
         });
         toast.success("Removed from favorites");
       } else {
@@ -68,56 +61,54 @@ export default function Houses() {
         toast.success("Added to favorites");
       }
     } catch (error) {
-      console.error("[Houses] Error toggling favorite:", error);
       toast.error(error.message || "Failed to update favorite");
     }
   };
 
-   if (loading) {
-      return <HouseCardGridSkeleton count={6} />;
-    }
-  return (
-    <div className="max-w-7xl mx-auto my-16" id="houses">
-      <div
-        className="px-4 py-1 md:px-6 md:py-2 md:ml-140 ml-22 rounded-full mb-5
-  bg-indigo-50 text-indigo-500 border  p-3 shadow-md  items-center gap-2 w-max flex justify-center text-xl"
-      >
-        Featured Houses
-      </div>
-      <h1 className="md:text-4xl text-center font-bold mb-10 tracking-wide text-gray-800">
-        Explore Avaiable Houses
-      </h1>
-      <p className="text-lg text-gray-600 text-center">
-        Find your perfect home among our featured listings.
-      </p>
+  if (loading) return <HouseCardGridSkeleton count={6} />;
 
-      <div>
-        {houses.length === 0 ? (
-          <p className="text-center text-gray-500 mt-10">
-            No houses available.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
-            {houses.slice(0, 12).map((house) => (
-              <HouseCard
-                house={house}
-                key={house._id}
-                isFavorite={favoriteIds.has(house._id)}
-                onToggleFavorite={handleToggleFavorite}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-              />
-            ))}
-          </div>
-        )}
-        <div>
-          <Link
-            to="/all-houses"
-            className="bg-indigo-500 text-white px-6 py-3 rounded-full shadow-lg hover:bg-indigo-600 transition duration-300 mt-10 block w-max mx-auto"
-          >
-            View All Houses
-          </Link>
-        </div>
+  return (
+    <section className="max-w-7xl mx-auto px-4 py-20" id="houses">
+      {/* Section Header */}
+      <div className="text-center mb-12">
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200 text-xs font-medium uppercase tracking-widest mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+          Featured Houses
+        </span>
+        <h1 className="font-serif text-4xl font-semibold text-gray-900 mb-3 tracking-tight">
+          Explore Available Houses
+        </h1>
+        <p className="text-gray-400 text-sm font-light">
+          Find your perfect home among our curated listings
+        </p>
       </div>
-    </div>
+
+      {/* Grid */}
+      {houses.length === 0 ? (
+        <p className="text-center text-gray-400 mt-10">No houses available.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-12">
+          {houses.slice(0, 12).map((house) => (
+            <HouseCard
+              key={house._id}
+              house={house}
+              isFavorite={favoriteIds.has(house._id)}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* CTA */}
+      <div className="text-center">
+        <Link
+          to="/all-houses"
+          className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-all hover:-translate-y-0.5 duration-200"
+        >
+          View All Houses
+          <span>→</span>
+        </Link>
+      </div>
+    </section>
   );
 }
