@@ -26,7 +26,7 @@ export default function Testmonials() {
     },
   ];
   return (
-    <div className=" bg-gray-100 rounded-lg my-16" id="testmonials">
+    <div className=" bg-gray-100 rounded-lg my-16 font-serif" id="testmonials">
       <div className="max-w-7xl mx-auto p-10">
         <h1 className="bg-indigo-50 p-1 text-indigo-500 border rounded-full mx-auto  text-center text-xl w-max mb-5 shadow-md tracking-wider">
           Testmonials

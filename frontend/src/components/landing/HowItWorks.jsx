@@ -4,7 +4,7 @@ export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState("tenant");
 
   return (
-    <div className="py-20 bg-[#f9fafb]" id="howitworks">
+    <div className="py-20 bg-[#f9fafb] font-serif" id="howitworks">
       <div className="max-w-7xl mx-auto px-6">
         {/* Title */}
         <h1 className="text-xl font-bold text-center mb-12 text-indigo-500 border bg-indigo-50 rounded-full w-max mx-auto px-4 py-1 md:px-6 md:py-2 shadow-md">

@@ -13,7 +13,7 @@ export default function Footer() {
             <Link to="/" className="flex items-center mb-4">
               <img src="/logo.png" alt="inzuHub Logo" className="h-12 w-auto" />
             </Link>
-            <p className="text-indigo-200 text-sm leading-relaxed mb-4">
+            <p className="text-indigo-200 text-sm leading-relaxed mb-4 font-serif">
               Rwanda's #1 rental platform connecting tenants with trusted
               landlords.
             </p>
@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-yellow-400">
+            <h3 className="text-lg font-semibold mb-4 text-yellow-400 font-serif">
               Quick Links
             </h3>
             <ul className="space-y-2">
@@ -86,7 +86,7 @@ export default function Footer() {
 
           {/* For Tenants */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-yellow-400">
+            <h3 className="text-lg font-semibold mb-4 text-yellow-400 font-serif">
               For Tenants
             </h3>
             <ul className="space-y-2">
@@ -127,7 +127,7 @@ export default function Footer() {
 
           {/* For Landlords */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-yellow-400">
+            <h3 className="text-lg font-semibold mb-4 text-yellow-400 font-serif">
               For Landlords
             </h3>
             <ul className="space-y-2">
