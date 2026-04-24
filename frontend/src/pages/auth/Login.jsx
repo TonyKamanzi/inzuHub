@@ -78,8 +78,8 @@ export default function Login() {
             <SwiperSlide>
               <img
                 src="/swiper/img2.png"
-                classNaded-lg
-                ded-lgme="w-full h-full object-cover"
+                className="w-full h-full object-cover"
+              
               />
             </SwiperSlide>
 

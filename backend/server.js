@@ -8,7 +8,7 @@ import authRoutes from "./routes/auth.routes.js";
 import houseRoutes from "./routes/house.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import favoriteRoutes from "./routes/favorite.routes.js";
-import bookingRoutes from "./routes/booking.routes.js";
+import bookingRoutes from "./routes/booking.routes.js"
 
 dotenv.config();
 
@@ -52,11 +52,7 @@ app.use("/auth", authRoutes);
 app.use("/house", houseRoutes);
 app.use("/admin", adminRoutes);
 app.use("/favorites", favoriteRoutes);
-app.use("/bookings", bookingRoutes);
-
-app.get("/", (req, res) => {
-  res.send("API is running 🚀");
-});
+app.use("/bookings", bookingRoutes)
 
 const PORT = 5000 || process.env.PORT;
 

@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "axios": "^1.14.0",
+    "dotenv": "^17.4.2",
     "framer-motion": "^12.38.0",
     "icons": "^1.0.0",
     "lucide": "^1.7.0",

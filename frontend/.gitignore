@@ -23,3 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 .claude
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+*.pfx
+*.cer
+*.csr
